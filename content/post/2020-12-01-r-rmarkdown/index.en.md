@@ -32,5 +32,11 @@ image:
 projects: []
 ---
 
+<<<<<<< HEAD
 <iframe height="800" width="100%" frameborder="no" src="https://h84by1-bruno-mesquita.shinyapps.io/AppTest/"> </iframe>
 
+=======
+```
+<iframe height="800" width="100%" frameborder="no" src="https://h84by1-bruno-mesquita.shinyapps.io/AppTest/"> </iframe>
+```
+>>>>>>> 0c95044f1e35844fdcd46d9b6fff379895afbcc3
