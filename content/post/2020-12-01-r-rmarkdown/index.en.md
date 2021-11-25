@@ -10,7 +10,11 @@ categories: []
 date: 2021-11-24T20:47:51-05:00
 lastmod: 2021-11-24T20:47:51-05:00
 featured: false
+output:
+  blogdown::html_page:
+    toc: false
 draft: false
+runtime: shiny
 
 # Featured image
 # To use, add an image named `featured.jpg/png` to your page's folder.
@@ -27,3 +31,7 @@ image:
 #   Otherwise, set `projects = []`.
 projects: []
 ---
+
+```
+<iframe height="800" width="100%" frameborder="no" src="https://h84by1-bruno-mesquita.shinyapps.io/AppTest/"> </iframe>
+```
