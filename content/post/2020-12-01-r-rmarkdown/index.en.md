@@ -1,7 +1,7 @@
 ---
 # Documentation: https://wowchemy.com/docs/managing-content/
 
-title: "2020 12 01 R Rmarkdown"
+title: "Using Shiny to create widgets"
 subtitle: ""
 summary: ""
 authors: []
