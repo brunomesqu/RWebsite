@@ -53,9 +53,9 @@ social:
 #  link: https://instagram.com/geocushen
 
 # Uncomment below for Github link
-- icon: github
-  icon_pack: fab
-  link: https://github.com/brunomesqu
+#- icon: github
+#  icon_pack: fab
+#  link: https://github.com/brunomesqu
 
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
@@ -64,7 +64,7 @@ social:
 #   link: files/cv.pdf
 
 # Enter email to display Gravatar (if Gravatar enabled in Config)
-email: "brunomesqu@gmail.com"
+#email: "brunomesqu@gmail.com"
 ---
 
 Bruno is a grad student in Neuroscience at the University of Western Ontario.
