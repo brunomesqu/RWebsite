@@ -69,4 +69,4 @@ social:
 
 Bruno is a grad student in Neuroscience at the University of Western Ontario.
 
-{{% staticref "uploads/cv.pdf" "newtab" %}}Download my CV{{% /staticref %}}
+{{% staticref "uploads/cv.pdf" "newtab" %}}My CV{{% /staticref %}}
