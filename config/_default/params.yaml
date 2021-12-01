@@ -39,7 +39,7 @@ time_format: '3:04 PM'
 highlight: true
 highlight_languages:
   - r
-math: false
+math: true
 diagram: false
 privacy_pack: false
 require_isotope: false  # Enable if you use Portfolio widget or Publication pages
