@@ -533,4 +533,9 @@ plot2 <- ggplot(data=predicted.data,aes(x=probability.of.survival,y=Survived,col
 ```
 {{< figure library="true" src="log_perform_gender.png" >}}
 
+## Wrap-up
+
+Hopefully by now you have a good understanding of logistic regression models. This is in my opinion much less intuitive and a bit harder to approach than simple linear regression, but by going step by step in approaching these modelling techniques, I hope I was able to provide a gentle introduction to this topic.
+
+{{< figure library="true" src="ponder.png" >}}
 
