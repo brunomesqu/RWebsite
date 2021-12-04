@@ -51,7 +51,7 @@ edit_page:
     post: false
 show_related:
   post: true
-email: test@example.org
+email: bmesquit@uwo.ca
 sharing_image: ''
 reading_time: true
 section_pager: true
