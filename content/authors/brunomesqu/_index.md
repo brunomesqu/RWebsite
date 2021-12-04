@@ -67,6 +67,6 @@ social:
 # email: "brunomesqu@gmail.com"
 ---
 
-Bruno Mesquita (He/Him) is a Neuroscience MsC Candidate at the University of Western Ontario. Currently part of CoNCH Lab, Bruno is interested in studying the process through which we learn information about statistical regularities in the environment in order to aid our perception of acoustic sensory objects. Bruno also has an undying passion for Card, Board, and Video Games, as well as science fiction and speculative biology. 
+Bruno Mesquita (He/Him) is a Neuroscience MsC Candidate at the University of Western Ontario. Currently part of CoNCH Lab, Bruno is interested in studying the process through which we learn information about statistical regularities in the environment in order to aid our perception of auditory sensory objects. Bruno also has an undying passion for Card, Board, and Video Games, as well as science fiction and speculative biology. 
 
 {{% staticref "uploads/cv.pdf" "newtab" %}}My CV{{% /staticref %}}
