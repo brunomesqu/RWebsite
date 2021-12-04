@@ -33,7 +33,7 @@ projects: []
 ---
 
 
-Logistic regression,(also known as logit model) is a regression model used to model dichotomous outcome variables. The underlying similarities between Logistic and Linear regression models can be both a blessing, and a curse. Providing students that have some prior familiarity with linear models many opportunities to bridge their knowledge between the two models, but at the same time creating treacherous pitfalls in how logit models should be interpreted differently from linear models.
+Logistic regression (also known as a logit model), is a regression model used to model dichotomous outcome variables. The underlying similarities between Logistic and Linear regression models can be both a blessing, and a curse. Providing students that have some prior familiarity with linear models many opportunities to bridge their knowledge between the two models, but at the same time creating treacherous pitfalls in how logit models should be interpreted differently from linear models.
 
 {{< toc >}}
 
