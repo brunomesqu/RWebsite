@@ -4,7 +4,8 @@
 title: "Creating Shiny apps in Rstudio"
 subtitle: ""
 summary: ""
-authors: []
+authors:
+- brunomesqu
 tags: []
 categories: []
 date: 2021-11-24T20:47:51-05:00
