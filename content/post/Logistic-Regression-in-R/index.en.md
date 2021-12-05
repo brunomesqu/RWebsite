@@ -4,7 +4,8 @@
 title: "Logistic Regression in R"
 subtitle: ""
 summary: ""
-authors: []
+authors:
+- brunomesqu
 tags: []
 categories: []
 date: 2021-11-24T20:47:51-05:00
@@ -523,7 +524,6 @@ This calculation gives us a value of:
 
 ```{r}
 [1] 0.7832168
-
 ```
 
 Which can be interpreted as our model having about 78% accuracy in predicting passenger survival. Pretty good!
