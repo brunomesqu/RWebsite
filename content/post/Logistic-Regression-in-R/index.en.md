@@ -484,7 +484,7 @@ Those being our pseudo-$R^2$ and the results of the statistical significance tes
 
 Finally, a final method for evaluating your model performance would be to compare our model's predictions to the actual data set we are using. Logistic regression is fundamentally a form of machine learning, and as such we can evaluate our model by calculating its predictive performance much like we usually do for other types of machine learning. For this approach, it is necessary to divide your data set into two parts: One that will be used for 'training' our model, and a second one that will be used to test it, so let's really quickly re-do some data wrangling and modelling:
 
-````{r}
+```{r}
 
 # The titanic data set seems to have passengers ordered in no particular order, but I will randomize row order just to be sure our training and testing samples aren't biased in any way.
 
@@ -522,7 +522,8 @@ prediction_accuracy
 This calculation gives us a value of:
 
 ```{r}
-#[1] 0.7832168
+[1] 0.7832168
+
 ```
 
 Which can be interpreted as our model having about 78% accuracy in predicting passenger survival. Pretty good!
