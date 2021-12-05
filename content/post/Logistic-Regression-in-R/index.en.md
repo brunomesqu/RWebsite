@@ -482,6 +482,51 @@ Returns:
 ```
 Those being our pseudo-$R^2$ and the results of the statistical significance test (here a value so small it shows up as zero, so far below a p value of $0.05$).
 
+Finally, a final method for evaluating your model performance would be to compare our model's predictions to the actual data set we are using. Logistic regression is fundamentally a form of machine learning, and as such we can evaluate our model by calculating its predictive performance much like we usually do for other types of machine learning. For this approach, it is necessary to divide your data set into two parts: One that will be used for 'training' our model, and a second one that will be used to test it, so let's really quickly re-do some data wrangling and modelling:
+
+````{r}
+
+# The titanic data set seems to have passengers ordered in no particular order, but I will randomize row order just to be sure our training and testing samples aren't biased in any way.
+
+rows <- sample(nrow(df))
+df <- df[rows, ]
+
+# We divide the data into a 20:80 ratio for training and testing
+
+split <- 0.80*nrow(df)
+
+train_df <- df[1:split,]
+test_df <- df[split:nrow(df),]
+
+# We make our model once again, this time with the split dataset
+
+log_Sex_Age_Class_V2 <- glm(Survived ~ Sex + Age + Pclass, family=binomial, data=train.df)
+
+# And we can test the prediction accuracy
+
+# We first use the predict function to predict the probability of survival of each passenger given our model
+
+predictions <- as.data.frame(predict(log_Sex_Age_Class_V2,newdata = test_df,type = 'response')) 
+
+# Since survival is a dichotomous variable, either 1 or 0, we can round out any passengers with probability of below 0.5 to 0, and above 0.5 to 1.
+predictions <- ifelse(predictions>0.5,1,0)
+
+# We can now asess the proportion of correctly predicted cases based on the 'test' data set
+
+prediction_accuracy <-  mean(predictions == test_df$Survived)
+
+prediction_accuracy
+
+```
+
+This calculation gives us a value of:
+
+```{r}
+#[1] 0.7832168
+```
+
+Which can be interpreted as our model having about 78% accuracy in predicting passenger survival. Pretty good!
+
 ## Part IV: Visualizing our model
 
 There are many ways to plot the outputs of a logistic regression model. I will show only a couple of them. 
