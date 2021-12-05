@@ -55,7 +55,7 @@ In this blog post we will approach Logistic Regression in a manner similar as to
 
 We will finalize this blog-post by plotting some visualizations of our model, but before we move on I think it is important to visualize what a traditional logistical regression plot actually looks like before we even begin talking about it.
 
-This post will assume that you have some familiarity with the GLM approach to data analysis, and therefore you should probably know by now that in a traditional linear modelling approach, our model is fitting a line to the data (hence the name linear modelling). In the case of logistic regression, we plot a regression 'curve' that has a characteristic sinusoidal shape. 
+This post will assume that you have some familiarity with the GLM approach to data analysis, and therefore you should probably know by now that in a traditional linear modelling approach, our model is fitting a line to the data (hence the name linear modelling). 
 
 ```{r eval=FALSE, include=FALSE}
 ggplot(mtcars, aes(x=hp, y=mpg)) + 
@@ -64,7 +64,7 @@ ggplot(mtcars, aes(x=hp, y=mpg)) +
 ```
 {{< figure library="true" src="lin_cars.png" >}}
 
-Here is an example of a logistic regression curve being plotted on the classic mtcars data set, where horsepower is being used to predict whether the car model has a "V"(0) or "Straight"(1) engine. 
+In the case of logistic regression, we plot a regression 'curve', also called a 'Sigmoid', that has a characteristic sinusoidal shape. Here is an example of a logistic regression curve being plotted on the classic mtcars data set, where horsepower is being used to predict whether the car model has a "V"(0) or "Straight"(1) engine. 
 
 ```{r}
 ggplot(mtcars, aes(x=hp, y=vs)) + 
@@ -74,6 +74,10 @@ ggplot(mtcars, aes(x=hp, y=vs)) +
 ```
 
 {{< figure library="true" src="log_cars.png" >}}
+
+As you can see the sigmoid curve only goes from 0 to 1. That is because as was mentioned before, logistic regression deals with *binary* data, that is, whether something does or does not belong to a given category ( In this example, the type of engine). Through our model and the sigmoid function fit to the data, we seek to obtain, therefore, a value from 0 to 1 for any given observation, which represents the *probability* of that observation belonging to one of our two categories. 
+
+Although these initial concepts in logistic regression may seem fairly straightforward, what goes behind the scenes in calculating these probabilities can be a little tricky, and will result in crucial elements as to how to interpret our model summary outputs in R. 
 
 We will see in more detail throughout this blog post what exactly is going on behind the scenes for logit models.
 
@@ -88,12 +92,14 @@ As mentioned above, logistic regression deals primarily with probabilities. You 
 $$
 p = \frac{Sn}{n}
 $$
-However, importantly, logit models work with not just probabilities, but the _Odds_ of a given event happening. These are calculated as the ratio of the probability of an event happening(p) over the probability of the event not happening. Alternatively, the odds of an event can also be calculated by dividing the number of successes (Sn) over the number of failures (Fn):
+
+However, behind the scenes, logit models work with not just probabilities, but the _Odds_ of a given event happening. These are calculated as the ratio of the probability of an event happening(p) over the probability of the event not happening. Alternatively, the odds of an event can also be calculated by dividing the number of successes (Sn) over the number of failures (Fn):
 
 $$
 Odds = \frac{Sn}{Fn} = \frac{\frac{Sn}{n}}{\frac{Fn}{n}}= \frac{p}{1-p}
 $$
-I would also like to introduce another important concept in logistic regression, whose importance will become more clear later on, that of _Odds Ratio(OR)_  which is simply the ratio of two odds:
+
+I would also like to introduce another important concept in logistic regression, whose importance will become more clear later on, that of _Odds Ratio(OR)_ which is simply the ratio of two odds:
 
 $$
 OR = \frac{\frac{p_1}{1-p_1}}{\frac{P_0}{1 -P_0}}
@@ -104,13 +110,15 @@ Now that we  had this brief overview of some fundamental concepts in probability
 $$
 Odds =log(\frac{p_x}{1-p_X}) = \beta_0 + \beta_1 X
 $$
+
 Where in this formula, $p_x$ is the probability of a given event happening given $X$. In this equation, we also have the values for the coefficients, similarly as to how we see in a linear regression represented by $\beta_{0}$ (the intercept) and  $\beta_{1}$ ( the slope for variable 1). However, the interpretation of these coefficients is a bit less immediately clear than in linear regression, as we can see that they all relate to the _log(Odds)_ of an event. We will approach this in more detail when dealing with a practical example.
 
-As we mentioned before, one of the main goals of logistic regression is _estimating the probability of a binary event occurring, given a specifc set of variables_. therefore, much like in linear regression we estimate $\hat{y}$ for a given combination of variables, in logistic regression, we can estimate $\hat{p}$ for a linear combination of the independent variables. Therefore, by rewriting the previous equation in solving for $p$, we obtain the following equation, representig the _logit equation in probability form_:
+As we mentioned before, one of the main goals of logistic regression is _estimating the probability of a binary event occurring, given a specifc set of variables_. therefore, much like in linear regression we estimate $\hat{y}$ for a given combination of variables, in logistic regression, we can estimate $\hat{p}$ for a linear combination of the independent variables. Therefore, by rewriting the previous equation in solving for $p$, we obtain the following equation, representing the _logit equation in probability form_:
 
 $$
 \hat{p} \frac{e^{\beta_0+\beta_1 x1}}{1 + e^{\beta_0+\beta_1 x1}}
 $$
+
 Importantly, although logit models generally aim to estimate $\hat{p}$, fitting the data mathematically involves estimating the combination of values for $\beta_{0}$ and $\beta_{1}$ that yield the largest likelihood for our data. Therefore, when computing these models in R, the background process of 'fitting the data' that happens is mostly solving 'for' $\hat{beta_{0}}$ and $\hat{beta_{1}}$ that fulfill these requirements, also known as the _Maximum Likelihood Estimates (MLE)_. This is notably distinct from the process of fitting that happens in linear regression that aims to minimize residuals.
 
 Finally, another important mathematical aspect of logit modelling for interpreting our  output, is that exponentiating $\hat{beta_{1}}$ results in an estimate of the odds ratio for the effect for that variable:
@@ -118,7 +126,12 @@ Finally, another important mathematical aspect of logit modelling for interpreti
 $$
 e^{\hat{\beta_{1}}} = OR
 $$
-These concepts will hopefully become more clear once we get into specific modelling examples later on.
+
+These concepts can be quite overwhelming, but they will hopefully become more clear once we get into specific modelling examples later on. For now, the main takeaways I'd like you to keep is that:
+
+- Logistic Regression aims to *estimate the probability* of each observation belonging to one of *two* categories.
+
+- Although what we are aiming for are probabilities, the behind-the-scenes process of logistic regression employs the use of a function called the *logit*, which notably deals with *Odds* and *Odds Ratios*. This will have important implications in how we interpret our model *coefficients*.
 
 ## Part II: Assumptions of the logistic regression model
 
