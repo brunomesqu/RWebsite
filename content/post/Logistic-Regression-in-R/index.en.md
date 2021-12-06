@@ -108,7 +108,7 @@ $$
 Now that we  had this brief overview of some fundamental concepts in probability, we can finally go over the definition of the most important concept in logistic regression, the _logit_, which is defined as the _log(odds)_ of a given event occurring. Particularly, in logit modelling, we will model the logit with a linear function of the regressors:
 
 $$
-Odds =log(\frac{p_x}{1-p_X}) = \beta_0 + \beta_1 X
+Odds =log(\frac{p_x}{1-p_x}) = \beta_0 + \beta_1 X
 $$
 
 Where in this formula, $p_x$ is the probability of a given event happening given $X$. In this equation, we also have the values for the coefficients, similarly as to how we see in a linear regression represented by $\beta_{0}$ (the intercept) and  $\beta_{1}$ ( the slope for variable 1). However, the interpretation of these coefficients is a bit less immediately clear than in linear regression, as we can see that they all relate to the _log(Odds)_ of an event. We will approach this in more detail when dealing with a practical example.
