@@ -127,6 +127,11 @@ $$
 e^{\hat{\beta_{1}}} = OR
 $$
 
+Try it out yourself, and see how altering the coefficients (both for the predictor and the intercept) affect the log(Odds) and, consequently, the predicted probability ($\hat{p}$) of an observation belonging to a certain dichotomous category:
+
+<iframe height="800" width="100%" frameborder="no" src="https://h84by1-bruno-mesquita.shinyapps.io/logswidget/"> </iframe>
+
+
 These concepts can be quite overwhelming, but they will hopefully become more clear once we get into specific modelling examples later on. For now, the main takeaways I'd like you to keep is that:
 
 - Logistic Regression aims to *estimate the probability* of each observation belonging to one of *two* categories.
@@ -514,7 +519,7 @@ test_df <- df[split:nrow(df),]
 
 # We make our model once again, this time with the split dataset
 
-log_Sex_Age_Class_V2 <- glm(Survived ~ Sex + Age + Pclass, family=binomial, data=train.df)
+log_Sex_Age_Class_V2 <- glm(Survived ~ Sex + Age + Pclass, family=binomial, data=train_df)
 
 # And we can test the prediction accuracy
 
