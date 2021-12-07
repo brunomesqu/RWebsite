@@ -174,6 +174,8 @@ df = titanic_train %>%
 df$Age <- as.numeric(df$Age)
 df$Sex <- as.factor(df$Sex)
 df$Pclass <- as.factor(df$Pclass)
+
+# Converting them into factors helps us expediate the process of modelling them, but R will set the reference groups alphabetically, in this case, women are the reference group for gender, and 'first class' passengers are the reference group for class
   
 ```
 
@@ -332,9 +334,9 @@ log(\frac{p_1}{1-p_1}) = 1.1243 - 2.4778=-1.3535=e^{-1.3535}=0.258
 $$
 
 
-Now this model has results that are a bit more interesting to analyze. We can see how apart from the intercept, we now also have information regarding our predictor variable 'dummy male'. More specifically, we have:
+Now this model has results that are a bit more interesting to analyze. We can see how apart from the intercept, we now also have information regarding our predictor variable 'Sexmale'. More specifically, we have:
 
-1. An estimate for the coefficient of dummy_male, that of $-2.4778$. This value represents the log(odds) ratio between the female group and the male group (as we have males as the reference group). By exponentiating this coefficient we can obtain the odds ratio: $e^{-2.477825} = 0.083$, which is the same value we got before! What we can interpret from that is that the odds of a man surviving the sinking of the titanic were only roughly 8% than that for women!
+1. An estimate for the coefficient of Sex being 'male', that of $-2.4778$. This value represents the log(odds) ratio between the female group and the male group (as we have women as the reference group). By exponentiating this coefficient we can obtain the odds ratio: $e^{-2.477825} = 0.083$, which is the same value we got before! What we can interpret from that is that the odds of a man surviving the sinking of the titanic were only roughly 8% than that for women!
 
 2. We also obtain results from statistical tests for significance of coefficients. Namely, the test performed is the Wald test, which here indicates through a p <0.05 that gender is a useful predictor of the probability of surviving the Titanic sinking.
 
