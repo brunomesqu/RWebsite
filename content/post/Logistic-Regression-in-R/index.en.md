@@ -75,7 +75,7 @@ ggplot(mtcars, aes(x=hp, y=vs)) +
 
 {{< figure library="true" src="log_cars.png" >}}
 
-As you can see the sigmoid curve only goes from 0 to 1. That is because as was mentioned before, logistic regression deals with *binary* data, that is, whether something does or does not belong to a given category ( In this example, the type of engine). Through our model and the sigmoid function fit to the data, we seek to obtain, therefore, a value from 0 to 1 for any given observation, which represents the *probability* of that observation belonging to one of our two categories. 
+As you can see, the sigmoid curve only goes from 0 to 1. That is because as was mentioned before, logistic regression deals with *binary* data, that is, whether something does or does not belong to a given category ( In this example, the type of engine). Through our model and the sigmoid function fit to the data, we seek to obtain, therefore, a value from 0 to 1 for any given observation, which represents the *probability* of that observation belonging to one of our two categories. 
 
 Although these initial concepts in logistic regression may seem fairly straightforward, what goes behind the scenes in calculating these probabilities can be a little tricky, and will result in crucial elements as to how to interpret our model summary outputs in R. 
 
@@ -83,7 +83,7 @@ We will see in more detail throughout this blog post what exactly is going on be
 
 ## Part I: Logistic regression and the logit
 
-Logistic regression is a modelling approach that fundamentally deals with probabilities. Our main goals with this model are to model and estimate the probability of an event occurring, given specific values of a set of independent variables. This consequently allows us to predict the effect of these variables on a dependent variable of binary response, and therefore classify observations by the probability of belonging to a category related to the occurrence of this binary event.
+Logistic regression is a modelling approach that fundamentally deals with probabilities. Our main goals with this model is to estimate the probability of an event occurring, given specific values of a set of independent variables. This consequently allows us to predict the effect of these variables on a dependent variable of binary outcome, and therefore classify observations by the probability of belonging to a category related to the occurrence of this binary event.
 
 It is important to note that these principles already bring some important distinctions between logistic and linear regression models. First, binary data does not follow a normal distribution, one of the primary assumptions needed to employ linear models. And secondly, the output of a logit regression may not be as clear cut to interpret as in a traditional linear regression, so let's go over things step by step!
 
@@ -156,7 +156,7 @@ For the purposes of this tutorial, our assumptions are generally respected by vi
 
 ### Intercept-only model
 
-Throughout all of our examples, we will be using the very popular Titanic dataset, that contains information about the passengers of the iconic maiden and final voyage of the historical vessel of the same name.
+Throughout all of our examples, we will be using the very popular Titanic dataset, that contains information about the passengers of the iconic both maiden and final voyage of the historical vessel of the same name.
 
 
 ```{r}
@@ -183,6 +183,8 @@ Throughout our models, we will be modeling the probability of surviving the sink
 
 ```{r}
 
+# Making a table with the number of survivors of the Titanic
+
 survival <-  as.data.frame(table(df$Survived)) %>% 
   pivot_wider(names_from = Var1, values_from = Freq) %>% 
   rename(Yes = '1', No = '0')
@@ -205,7 +207,7 @@ $$
 Odds = \frac{\frac{290}{714}}{\frac{424}{714}} = 0.683
 $$
 
-So according to these results, the probability of surviving the sinking of the Titanic is approximately $0.406$ or around $40%$, while the odds of surviving are $0.660$ to $1$.
+So according to these results, the probability of surviving the sinking of the Titanic is approximately $0.406$ or around $40%$, while the odds of surviving are $0.683$ to $1$.
 
 Next, we will model the log(odds) of survival on a model with no predicting variables, and therefore known as a predictor-only model. This isn't very useful but can help with a gentle introduction to the modelling approach. 
 
@@ -253,32 +255,41 @@ Admittedly, there isn't much to see here,as pretty much the only result of inter
 Next, we will have something a little more substantial to chew on. We will now add the binary predictor of Sex to the model, and see how this affects the prediction of log(odds) of survival. First, let us once again calculate a few preliminary information that we can look back on for checking the results of our model:
 
 ```{r}
+
+# Making a table of the survival by gender
+
 survival_gender <-  df %>% 
   dplyr::select(Survived, Sex)
   
 survival_gender <- as.data.frame(table(survival_gender))
 
-Gender <- c('Male',' Female')
-Survivors <- c(109,233)
-Deaths <- c(468,81)
+survival_gender_pivot <- survival_gender %>% 
+  pivot_wider(names_from = Sex, values_from = Freq) %>% 
+  rename('Male' = male, 'Female' = female) %>% 
+  mutate(Survived = case_when(Survived == 0 ~ 'No',
+                              T ~ 'Yes'))
 
-survival_gender <- as.data.frame(cbind(Gender,Survivors,Deaths))
+#Recoding variables
 
-survival_gender$Survivors <- as.numeric(survival_gender$Survivors)
-survival_gender$Deaths <- as.numeric(survival_gender$Deaths)
+survival_gender_pivot$Male <- as.numeric(survival_gender_pivot$Male)
+survival_gender_pivot$Female <- as.numeric(survival_gender_pivot$Female)
   
+#Making the table using gt
 
-gt(survival_gender) %>% 
+survival_gender_tbl <- gt(survival_gender_pivot) %>% 
   tab_header( title = "Titanic survivors by gender") %>% 
   cols_align(
     align = "center")
+    
+
+gtsave("tab_2.png",data = survival_gender_tbl, expand = 10)
 
 
 ```
 
-{{< figure library="true" src="tab_1.png" >}}
+{{< figure library="true" src="tab_2.png" >}}
 
-Therefore with this information we can calculate the probability, odds, and odds ratio of survival relative to gender, with the probability of men surviving being $0.189$, and for women being $0.742$. Additionally, the odds of survival for men were $0.233$, and for women $2.877$. Finally, since we have the odds of survival for both males and females, we are also able to calculate the odds ratio of survival of men over women:$0.081$.
+Therefore with this information we can calculate the probability, odds, and odds ratio of survival relative to gender, with the probability of men surviving being $0.205$, and for women being $0.754$. Additionally, the odds of survival for men were $0.258$, and for women $3.078$. Finally, since we have the odds of survival for both males and females, we are also able to calculate the odds ratio of survival of men over women:$0.083$. Do note that since the original data set did not make a distinction between sex and gender, I will be mostly using these terms interchangeably, as there can be an argument both for the actual gender expression of passengers being what affected their survival ( i.e. women being offered spots on the lifeboats sooner) as well as for gender may not have been properly captured in the collection of this data set ( and so it would actually reflect only sex as assigned at birth).
 
 
 
@@ -320,11 +331,15 @@ Number of Fisher Scoring iterations: 4
 
 ```
 
+Now this model has results that are a bit more interesting to analyze. We can see how apart from the intercept, we now also have information regarding our predictor variable 'Sexmale'. More specifically, we have:
+
+1. An estimate for the coefficient of Sex being 'male', that of $-2.4778$. This value represents the log(odds) ratio between the female group and the male group (as we have women as the reference group). By exponentiating this coefficient we can obtain the odds ratio: $e^{-2.477825} = 0.083$, which is the same value we got before! What we can interpret from that is that the odds of a man surviving the sinking of the titanic were only roughly 8% than that for women!
+
 We can interpret these results in the form of the equation for the logit model. First, as the logit for when the person is a woman, which can be converted into the odds of survival for women that we calculated earlier:
 
 
 $$
-log(\frac{p_0}{1-p_0}) = 1.1243=e^{1.1243}=3.077
+log(\frac{p_0}{1-p_0}) = 1.1243=e^{1.1243}=3.078
 $$
 
 And for when the person is a man:
@@ -332,11 +347,6 @@ And for when the person is a man:
 $$
 log(\frac{p_1}{1-p_1}) = 1.1243 - 2.4778=-1.3535=e^{-1.3535}=0.258
 $$
-
-
-Now this model has results that are a bit more interesting to analyze. We can see how apart from the intercept, we now also have information regarding our predictor variable 'Sexmale'. More specifically, we have:
-
-1. An estimate for the coefficient of Sex being 'male', that of $-2.4778$. This value represents the log(odds) ratio between the female group and the male group (as we have women as the reference group). By exponentiating this coefficient we can obtain the odds ratio: $e^{-2.477825} = 0.083$, which is the same value we got before! What we can interpret from that is that the odds of a man surviving the sinking of the titanic were only roughly 8% than that for women!
 
 2. We also obtain results from statistical tests for significance of coefficients. Namely, the test performed is the Wald test, which here indicates through a p <0.05 that gender is a useful predictor of the probability of surviving the Titanic sinking.
 
@@ -393,7 +403,7 @@ Number of Fisher Scoring iterations: 5
 
 In the output of this model we can once again see all of the elements present in our previous model, the main difference is that now we have additional coefficients in relation to our previous one. Notably, all of our predictors seem to be showing significant p values as useful predictors of odds of surviving the sinking! We already went over how to interpret categorical predictors when discussing the effect of gender on our model, and so we can similarly visualize how the coefficients for class behave in a similar manner. Note how the categorical predictor of class has more factor levels (two, as opposed to one, for gender) it should be kept in mind that these coefficients are in relation to the reference group (Pclass1). 
 
-But what does the 'estimate' mean in the context of a continuous predictor, such as Age? In this case, the 'estimate' of Age is $-0.36985$, when we exponentiate this value we obtain the estimated odds ratio for age:$e^{-0.0369} = 0.96$ and it can be interpreted as: " for any increase in age by 1, that is, for every year older someone is, their odds ratio for survival decline by 0.034%.
+But what does the 'estimate' mean in the context of a continuous predictor, such as Age? In this case, the 'estimate' of Age is $-0.36985$, when we exponentiate this value we obtain the estimated odds ratio for age:$e^{-0.0369} = 0.964$ and it can be interpreted as: " for any increase in age by 1, that is, for every year older someone is, their odds for survival decline by 0.034%.
 
 
 
@@ -422,9 +432,9 @@ This returns a value of:
 [1] 2.020274e-48
 ```
 
-In this case, our single-predictor model, with a p-value lower than 0.05, is a better fit to the data than an intercept-only model
+In this case, our single-predictor model, with a p-value lower than 0.05, is a better fit to the data than an intercept-only model.
 
-A similar comparison between deviances can be done between two models, in what is known as a ' drop-in-deviance test', and will similarly help us define whether a given model is significantly more well-fit to the data than another.
+A similar comparison between deviance can be done between two models, in what is known as a 'drop-in-deviance test', and will similarly help us define whether a given model is significantly more well-fit to the data than another.
 
 ```{r}
 # Here we will perform a drop-in-deviance test comparing our single-predictor model with our two-predictor model
@@ -503,21 +513,39 @@ Returns:
 ```
 Those being our pseudo-$R^2$ and the results of the statistical significance test (here a value so small it shows up as zero, so far below a p value of $0.05$).
 
+```{r}
+
+#The 'DescTools' package in R also has a function for calculating McFadden's pseudo Rsqrd
+
+library(DescTools)
+
+PseudoR2(log_Sex_Age_Class, which = NULL)
+
+
+```
+
+Which gives us the same value we got before by doing it manually:
+
+```
+McFadden 
+0.3289037 
+```
+
 Finally, a final method for evaluating your model performance would be to compare our model's predictions to the actual data set we are using. Logistic regression is fundamentally a form of machine learning, and as such we can evaluate our model by calculating its predictive performance much like we usually do for other types of machine learning. For this approach, it is necessary to divide your data set into two parts: One that will be used for 'training' our model, and a second one that will be used to test it, so let's really quickly re-do some data wrangling and modelling:
 
 ```{r}
 
-# The titanic data set seems to have passengers ordered in no particular order, but I will randomize row order just to be sure our training and testing samples aren't biased in any way.
+# The titanic data set seems to have passengers ordered in no particular order, but I will randomize row order just to be sure our training and testing samples aren't biased in any way. But keep in mind that it is not advisable to do it this way in an actual research paper, as each time you run this code you will get a diffeent value!
 
 rows <- sample(nrow(df))
-df <- df[rows, ]
+df_scrambled <- df[rows, ]
 
 # We divide the data into a 20:80 ratio for training and testing
 
-split <- 0.80*nrow(df)
+split <- 0.80*nrow(df_scrambled)
 
-train_df <- df[1:split,]
-test_df <- df[split:nrow(df),]
+train_df <- df_scrambled[1:split,]
+test_df <- df_scrambled[split:nrow(df),]
 
 # We make our model once again, this time with the split dataset
 
@@ -552,24 +580,35 @@ Which can be interpreted as our model having about 78% accuracy in predicting pa
 
 There are many ways to plot the outputs of a logistic regression model. I will show only a couple of them. 
 
-Unfortunately due to the nature of our data and predictors, we don't have a reliable continuous predictor with a strong effect size so as to achieve the classic ' sinusoidal' visualization of a fitted line, with our best predictors being the categorical predictors of gender and class. Therefore, I will instead plot two visualizations aiming at simply showing the performance of our model in predicting the actual fate of the Titanic's passengers survival.
+Unfortunately due to the nature of our data and predictors, we don't have a reliable continuous predictor with a strong effect size so as to achieve the classic ' sinusoidal' visualization of a fitted line, with our best predictors being the categorical predictors of gender and class. Therefore, I will instead plot one visualization aiming at simply showing the performance of our model in predicting the actual fate of the Titanic's passengers survival, and a second visualization showing the discrepancy of survival depending on the passenger's sex.
 
-Both of my plots will try to show the same thing, albeit in different ways, that being visualizing how good of a job our model is doing at predicting the survival of the passengers of the Titanic. An important component of these plots is the use of the MASS package to do a step wise modelling that allows me to save the predicted probability of survival for each passenger individually.
+My first plot will mainly aim at visualizing how good of a job our model is doing at predicting the survival of the passengers of the Titanic. An important component of my plots is the use of the MASS package to do a step wise modelling that allows me to save the predicted probability of survival for each passenger individually.
 
 In the first plot, we have the Rank of the passengers' predicted probabilities of survival, with the estimated probability itself on the y axis. The color of the points represents the actual survival status of the passenger. This plot allows us to visualize if our model did a good job, and what were some outliers in the model that had very high or very low predicted probabilities of survival and yet ended up subjected an unlikely fate. 
 
 ```{r}
 
+# Doing the stepwise modelling
+
 log_Sex_Age_Class_stepwise <- log_Sex_Age_Class %>% stepAIC(direction='both',trace = FALSE)
 
-predicted.data <- data.frame(probability.of.survival = log_Sex_Age_Class_stepwise$fitted.value,Survived=df$Survived,Sex=df$Sex)
-predicted.data <- predicted.data[order(predicted.data$probability.of.survival,decreasing = FALSE),]
+# Wrangling the predicted data into a more manageable format
 
-predicted.data$Rank <- 1:nrow(predicted.data)
-predicted.data$Survived_Color <- as.factor(predicted.data$Survived)
+predicted_data <- data.frame(Prob_survival = log_Sex_Age_Class_stepwise$fitted.value,Survived=df$Survived,Sex=df$Sex)
+predicted_data <- predicted_data[order(predicted_data$Prob_survival,decreasing = FALSE),]
 
-plot1 <- ggplot(data=predicted.data,aes(x=Rank,y=probability.of.survival))+
-  geom_point(aes(color=Survived_Color),alpha=0.7,shape=1,stroke=1,size=2)+
+# Ranking the predicted data. This is aimed at easing the aesthetic visualization of the model in the plot, and order os observations doesn't really matter otherwise in this case.
+
+predicted_data$Rank <- 1:nrow(predicted.data)
+
+# We add a variable that allows us to add specific colors to each observation category
+
+predicted_data$Survived_color <- as.factor(predicted_data$Survived)
+
+# Making the first plot
+
+plot1 <- ggplot(data=predicted_data,aes(x=Rank,y=Prob_survival))+
+  geom_point(aes(color=Survived_color),alpha=0.7,shape=1,stroke=1,size=2)+
   scale_color_manual(name = "Survived",
                      values = c("0" = "cyan",
                                   "1" = "magenta"),
@@ -581,23 +620,27 @@ plot1 <- ggplot(data=predicted.data,aes(x=Rank,y=probability.of.survival))+
   ggtitle('Model Performance')+
   coord_fixed(ratio = 1000)
 
+plot1
 ```
 {{< figure library="true" src="log_perform.png" >}}
 
-As previously mentioned, both plots aim to achieve similar objectives, and as such the second plot also aims at visualizing our model performance. This time, we have the predicted probability of survival on the x axis, and the actual survival status on the y axis. In addition, this plot includes two sigmoid curves aiming to better visualize the predicted probabilities of survival by gender. With this plot we can now clearly see the visual representation of the drastic difference in survival for men vs. women that we had been seeing only in terms of statistics so far.
+As previously mentioned, my second plot  aims at comparing predicted probabilities of survival depending on the passenger's sex. This time, we have a box plot of the predicted probabilities of survival for each category. Here we can clearly see what the statistics have been telling us so far, women had much higher chances of surviving the sinking than men! This seems to corroborate the classical notion that women and children were the first to be offered spots in the lifeboats.
 
 ```{r}
-plot2 <- ggplot(data=predicted.data,aes(x=probability.of.survival,y=Survived,col=Sex))+
-  geom_point(alpha=0.7,shape=1,stroke=1)+
-  xlab('Predicted probability of surviving the Titanic sinking')+
-  ylab('Survived')+
-  stat_smooth(method="glm", method.args=list(family="binomial"), se=FALSE,fullrange = TRUE)+
+
+plot2 <- ggplot(predicted_data, aes(x = Sex, y = Prob_survival)) +
+  geom_boxplot(aes(fill = factor(Sex)), alpha = .2)+
   theme_bw(base_size = 12)+
   theme(legend.position = 'bottom',plot.title = element_text(hjust = 0.5))+
-  ggtitle('Survival by Gender')
+  labs(title = "Predicted probabilities of survival by Sex",
+                 x = 'Sex',
+                 y = 'Predicted Probability of Survival')+
+  guides(fill=guide_legend(title=""))
+
+plot2
 
 ```
-{{< figure library="true" src="log_perform_gender.png" >}}
+{{< figure library="true" src="log_perform_sex.png" >}}
 
 ## Wrap-up
 

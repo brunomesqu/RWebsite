@@ -33,13 +33,13 @@ image:
 projects: []
 ---
 
-Shiny is an exciting R package that allows us to create a variety of interactive widgets and visualizations straight from Rstudio! This is without a doubt a growing environment that in the front line of a shift in the scientific community on the storytelling approaches to data visualization.
+Shiny is an exciting R package that allows us to create a variety of interactive widgets and visualizations straight from Rstudio! This is without a doubt a growing environment in the front line of a shift in the scientific community on the storytelling approaches to data visualization.
 
 Throughout this brief tutorial, we will go over the process of creating one simple widget with Shiny. There is a gargantuan amount of content and possibilities when it comes to the Shiny package, but this tutorial will focus on the main points you need to know to get a shiny app up and running. I encourage everyone who wishes to dive deeper into the capabilities and under workings of Shiny to do so, just understand it is far beyond the scope of this introductory tutorial.
 
 Before we look into what code goes behind a Shiny app, let's first take a look at an example of an app.
 
-The following app aims to plot the process of fitting a regression line to your data on a simple linear regression modelling approach. The user is able to adjust the value of the intercept for the line as well as the coefficient for the slope of the single predictor used in the model, in return, the widget displays a plot corresponding to the line according to these parameters, and calculates the $R^2$ vale that corresponds to this line. The purpose of this widget is to help students visualize how a line is fitted by the least squares method, and toy around with the model by fitting it manually.
+The following app aims to plot the process of fitting a regression line to your data on a simple linear regression modelling approach. The user is able to adjust the value of the intercept for the line as well as the coefficient for the slope of the single predictor used in the model, in return, the widget displays a plot corresponding to the line according to these parameters, and calculates the $R^2$ value that corresponds to this line. The purpose of this widget is to help students visualize how a line is fitted by the least squares method, and toy around with the model by fitting it manually.
 
 
 <iframe height="800" width="100%" frameborder="no" src="https://h84by1-bruno-mesquita.shinyapps.io/AppTest/"> </iframe>
@@ -47,7 +47,7 @@ The following app aims to plot the process of fitting a regression line to your 
 
 Okay, now that we have seen a nice example of a Shiny app, let's look at some code! I like to use this app as an example because although it is a fairly simple app, there is still quite a bit to dissect to help understand how Shiny apps work.
 
-There are quite a few ways to create an app in R, which can also be comprised of a single file or multiple files. For the purposes of this tutorial let's stick with single file apps in the interest of simplicity. To create a shiny app you can do so directly from Rstudio by clicking *File>New File>Shiny Web App...* Then choose the name of your app, if it is a single/multiple file app, and which directory to save in. Pretty simple so far!
+There are quite a few ways to create an app in R, which can be comprised of a single file or multiple files. For the purposes of this tutorial let's stick with single file apps in the interest of simplicity. To create a shiny app you can do so directly from Rstudio by clicking *File>New File>Shiny Web App...* Then choose the name of your app, if it is a single/multiple file app, and which directory to save in. Pretty simple so far!
 
 Now let's move on to actually going over how to build our Shiny app.
 
@@ -66,7 +66,7 @@ Alright, so now let's get into the app itself.
 
 Any Shiny app is comprised of two crucial code components. An 'UI', and a 'Server' component. When running the app, these two must be called in order to build a properly functioning application. In case you are curious, these are also related to single/multiple file apps, as in a single file you have both components on the same script, while in a multiple file app you have a script for the UI, and one for the server. Let's briefly go over what each of these components are actually doing in an app.
 
-The User Interface, abbreviated to UI: It is the forefront of your app. It controls what is presented to the user, how it looks, and the avenues through which the app will capture user input. This is pretty much a very fancy object in R.
+The User Interface, abbreviated to UI: It is the forefront of your app. It controls what is presented to the user, how it looks, and the avenues through which the app will capture user input. This is pretty much a very fancy object in the traditional R sense.
 
 The server function: This controls how your app works. Things in the server function are not directly shown to the user unless specified in the UI, but this is where the user input will be converted into something to be displayed back. As the name implies, this is a function.
 
