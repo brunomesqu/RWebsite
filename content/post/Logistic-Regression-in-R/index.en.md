@@ -624,7 +624,7 @@ plot1
 ```
 {{< figure library="true" src="log_perform.png" >}}
 
-As previously mentioned, my second plot  aims at comparing predicted probabilities of survival depending on the passenger's sex. This time, we have a box plot of the predicted probabilities of survival for each category. Here we can clearly see what the statistics have been telling us so far, women had much higher chances of surviving the sinking than men! This seems to corroborate the classical notion that women and children were the first to be offered spots in the lifeboats.
+As previously mentioned, my second plot  aims at comparing predicted probabilities of survival depending on the passenger's sex. This time, we have a box plot of the predicted probabilities of survival for each category. Here we can clearly see what the statistics have been telling us so far, women had much higher chances of surviving the sinking than men! This seems to corroborate the classical notion that women and children were the first to be offered spots on the lifeboats.
 
 ```{r}
 
