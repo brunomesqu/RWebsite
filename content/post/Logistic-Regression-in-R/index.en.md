@@ -121,7 +121,7 @@ $$
 
 Importantly, although logit models generally aim to estimate $\hat{p}$, fitting the data mathematically involves estimating the combination of values for $\beta_{0}$ and $\beta_{1}$ that yield the largest likelihood for our data. Therefore, when computing these models in R, the background process of 'fitting the data' that happens is mostly solving 'for' the coefficients that fulfill these requirements, also known as the _Maximum Likelihood Estimates (MLE)_. This is notably distinct from the process of fitting that happens in linear regression that aims to minimize residuals. 
 
-Finally, another important mathematical aspect of logit modelling for interpreting our  output, is that exponentiating $\hat{beta_{1}}$ results in an estimate of the odds ratio for the effect for that variable:
+Finally, another important mathematical aspect of logit modelling for interpreting our  output, is that exponentiating coefficients results in an estimate of the odds ratio for the effect for that variable:
 
 $$
 e^{\hat{\beta_{1}}} = OR
