@@ -51,11 +51,11 @@ library(car)
 library(titanic)
 ```
 
-In this blog post we will approach Logistic Regression in a manner similar as to how we did so for linear models in class. We will first start by analyzing and understanding the underlying mathematical principles of the logit, followed by discussing the crucial assumptions of the model,and then applying these concepts to three logistic models; An intercept only mode, a single-predictor model, and a multiple predictor model.
+In this blog post we will approach Logistic Regression in a manner similar as to how we did so for linear models in class. We will first start by analyzing and understanding the underlying mathematical principles of the logit, followed by discussing the crucial assumptions of the model,and then applying these concepts to three logistic models; An intercept only model, a single-predictor model, and a multiple predictor model.
 
 We will finalize this blog-post by plotting some visualizations of our model, but before we move on I think it is important to visualize what a traditional logistical regression plot actually looks like before we even begin talking about it.
 
-This post will assume that you have some familiarity with the GLM approach to data analysis, and therefore you should probably know by now that in a traditional linear modelling approach, our model is fitting a line to the data (hence the name linear modelling). 
+This post will assume that you have some familiarity with the GLM approach to data analysis, and therefore you should probably know by now that in a traditional linear modelling approach, our model is fitting a line to the data (hence the name linear modelling). Here we have an example using the classic 'mtcars' dataset, where we predict horsepower(hp) from miles per gallon(mpg).
 
 ```{r eval=FALSE, include=FALSE}
 ggplot(mtcars, aes(x=hp, y=mpg)) + 
@@ -64,7 +64,7 @@ ggplot(mtcars, aes(x=hp, y=mpg)) +
 ```
 {{< figure library="true" src="lin_cars.png" >}}
 
-In the case of logistic regression, we plot a regression 'curve', also called a 'Sigmoid', that has a characteristic sinusoidal shape. Here is an example of a logistic regression curve being plotted on the classic mtcars data set, where horsepower is being used to predict whether the car model has a "V"(0) or "Straight"(1) engine. 
+In the case of logistic regression, we plot a regression 'curve', also called a 'Sigmoid', that has a characteristic sinusoidal shape. Here is an example of a logistic regression curve being plotted on the mtcars data set, where horsepower is being used to predict whether the car model has a "V"(0) or "Straight"(1) engine. 
 
 ```{r}
 ggplot(mtcars, aes(x=hp, y=vs)) + 
@@ -83,7 +83,7 @@ We will see in more detail throughout this blog post what exactly is going on be
 
 ## Part I: Logistic regression and the logit
 
-Logistic regression is a modelling approach that fundamentally deals with probabilities. Our main goals with this model is to estimate the probability of an event occurring, given specific values of a set of independent variables. This consequently allows us to predict the effect of these variables on a dependent variable of binary outcome, and therefore classify observations by the probability of belonging to a category related to the occurrence of this binary event.
+Logistic regression is a modelling approach that fundamentally deals with probabilities. Our main goal with this model is to estimate the probability of an event occurring, given specific values of a set of independent variables. This consequently allows us to predict the effect of these variables on a dependent variable of binary outcome, and therefore classify observations by the probability of belonging to a category related to the occurrence of this binary event.
 
 It is important to note that these principles already bring some important distinctions between logistic and linear regression models. First, binary data does not follow a normal distribution, one of the primary assumptions needed to employ linear models. And secondly, the output of a logit regression may not be as clear cut to interpret as in a traditional linear regression, so let's go over things step by step!
 
@@ -119,7 +119,7 @@ $$
 \hat{p} \frac{e^{\beta_0+\beta_1 x1}}{1 + e^{\beta_0+\beta_1 x1}}
 $$
 
-Importantly, although logit models generally aim to estimate $\hat{p}$, fitting the data mathematically involves estimating the combination of values for $\beta_{0}$ and $\beta_{1}$ that yield the largest likelihood for our data. Therefore, when computing these models in R, the background process of 'fitting the data' that happens is mostly solving 'for' $\hat{beta_{0}}$ and $\hat{beta_{1}}$ that fulfill these requirements, also known as the _Maximum Likelihood Estimates (MLE)_. This is notably distinct from the process of fitting that happens in linear regression that aims to minimize residuals.
+Importantly, although logit models generally aim to estimate $\hat{p}$, fitting the data mathematically involves estimating the combination of values for $\beta_{0}$ and $\beta_{1}$ that yield the largest likelihood for our data. Therefore, when computing these models in R, the background process of 'fitting the data' that happens is mostly solving 'for' the coefficients that fulfill these requirements, also known as the _Maximum Likelihood Estimates (MLE)_. This is notably distinct from the process of fitting that happens in linear regression that aims to minimize residuals. 
 
 Finally, another important mathematical aspect of logit modelling for interpreting our  output, is that exponentiating $\hat{beta_{1}}$ results in an estimate of the odds ratio for the effect for that variable:
 
@@ -207,7 +207,7 @@ $$
 Odds = \frac{\frac{290}{714}}{\frac{424}{714}} = 0.683
 $$
 
-So according to these results, the probability of surviving the sinking of the Titanic is approximately $0.406$ or around $40%$, while the odds of surviving are $0.683$ to $1$.
+So according to these results, the probability of surviving the sinking of the Titanic is approximately $0.406$ or around 40%, while the odds of surviving are $0.683$ to $1$.
 
 Next, we will model the log(odds) of survival on a model with no predicting variables, and therefore known as a predictor-only model. This isn't very useful but can help with a gentle introduction to the modelling approach. 
 
@@ -351,9 +351,12 @@ $$
 2. We also obtain results from statistical tests for significance of coefficients. Namely, the test performed is the Wald test, which here indicates through a p <0.05 that gender is a useful predictor of the probability of surviving the Titanic sinking.
 
 3. There are also outputs in this summary that relate to how well our model fits. These are:
-  +(i) Deviance Residuals: These are not super useful, seeing as the logit model fitting being done through the maximum likelihood method means that residuals by themselves are not immediately useful as a measure of model fit. It is interesting, however, to make sure that these are roughly symmetric.
-  +(ii) Null Deviance and Residual Deviance: These values can be used to statistically compare models. We can also use them to compute a pseudo $R^2$ that can help us better understand model comparisons, we will talk about this later but do note that this $R^2$ is fundamentally different than that for traditional linear regression.
-  +(iii) Aikake Information Criterion(AIC): This is the residual deviance adjusted for the number of parameters in the model, and has a roughly analogous purpose to the ' Adjusted $R^2$' in a traditional linear regression.
+
+(i) Deviance Residuals: These are not super useful, seeing as the logit model fitting being done through the maximum likelihood method means that residuals by themselves are not immediately useful as a measure of model fit. It is interesting, however, to make sure that these are roughly symmetric.
+  
+(ii) Null Deviance and Residual Deviance: These values can be used to statistically compare models. We can also use them to compute a pseudo $R^2$ that can help us better understand model comparisons, we will talk about this later but do note that this $R^2$ is fundamentally different than that for traditional linear regression.
+  
+(iii) Aikake Information Criterion(AIC): This is the residual deviance adjusted for the number of parameters in the model, and has a roughly analogous purpose to the ' Adjusted $R^2$' in a traditional linear regression.
   
 We will talk more about model comparison once we have another model to actually compare to, so now we will proceed to our second model.
 
