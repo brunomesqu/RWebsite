@@ -588,7 +588,7 @@ Unfortunately due to the nature of our data and predictors, we don't have a reli
 
 My first plot will mainly aim at visualizing how good of a job our model is doing at predicting the survival of the passengers of the Titanic. An important component of my plots is the use of the MASS package to do a step wise modelling that allows me to save the predicted probability of survival for each passenger individually.
 
-In the first plot, we have the Rank of the passengers' predicted probabilities of survival on the x axis, with the estimated probability itself on the y axis. The color of the points represents the actual survival status of the passenger. This plot allows us to visualize if our model did a good job, and what were some outliers in the model that had very high or very low predicted probabilities of survival and yet ended up subjected an unlikely fate. 
+In the first plot, we rank the participants based on their predicted probabilities of survival, and use that as a means to organize our x axis, with the estimated probability itself on the y axis. The color of the points represents the actual survival status of the passenger. This plot allows us to visualize if our model did a good job, and what were some outliers in the model that had very high or very low predicted probabilities of survival and yet ended up subjected an unlikely fate. 
 
 ```{r}
 
