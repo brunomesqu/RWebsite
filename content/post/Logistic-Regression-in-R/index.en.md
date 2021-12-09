@@ -516,14 +516,13 @@ Returns:
 ```
 Those being our pseudo-$R^2$ and the results of the statistical significance test (here a value so small it shows up as zero, so far below a p value of $0.05$).
 
-```{r}
+The 'DescTools' package in R also has a function for calculating McFadden's pseudo-$R^2$.
 
-#The 'DescTools' package in R also has a function for calculating McFadden's pseudo Rsqrd
+```{r}
 
 library(DescTools)
 
 PseudoR2(log_Sex_Age_Class, which = NULL)
-
 
 ```
 
@@ -538,7 +537,9 @@ Finally, a final method for evaluating your model performance would be to compar
 
 ```{r}
 
-# The titanic data set seems to have passengers ordered in no particular order, but I will randomize row order just to be sure our training and testing samples aren't biased in any way. But keep in mind that it is not advisable to do it this way in an actual research paper, as each time you run this code you will get a diffeent value!
+# The titanic data set seems to have passengers ordered in no particular order, but I will randomize row order just to be sure our training and testing samples aren't biased in any way. 
+
+# Keep in mind that it is not advisable to do it this way in an actual research paper! As each time you run this code you will get a different value!
 
 rows <- sample(nrow(df))
 df_scrambled <- df[rows, ]
@@ -587,7 +588,7 @@ Unfortunately due to the nature of our data and predictors, we don't have a reli
 
 My first plot will mainly aim at visualizing how good of a job our model is doing at predicting the survival of the passengers of the Titanic. An important component of my plots is the use of the MASS package to do a step wise modelling that allows me to save the predicted probability of survival for each passenger individually.
 
-In the first plot, we have the Rank of the passengers' predicted probabilities of survival, with the estimated probability itself on the y axis. The color of the points represents the actual survival status of the passenger. This plot allows us to visualize if our model did a good job, and what were some outliers in the model that had very high or very low predicted probabilities of survival and yet ended up subjected an unlikely fate. 
+In the first plot, we have the Rank of the passengers' predicted probabilities of survival on the x axis, with the estimated probability itself on the y axis. The color of the points represents the actual survival status of the passenger. This plot allows us to visualize if our model did a good job, and what were some outliers in the model that had very high or very low predicted probabilities of survival and yet ended up subjected an unlikely fate. 
 
 ```{r}
 
